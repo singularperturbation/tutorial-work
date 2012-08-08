@@ -3,11 +3,26 @@
  *
  *  Created on: Aug 5, 2012
  *      Author: ssimmons
+ *
+ *  Problem 11 summary: Find largest product of four
+ *  adjacent numbers in 20x20 grid in any direction.
+ *
+ *	Direction schema:
+ *
+ *			b	u	s
+ *			 ^	^  ^
+ *			   \| /
+ *		   l<---|--->r
+ *			   /|\
+ *			  /	v \
+ *			t<	d  >a
  */
 
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+
+#define BOUNDARY 20
 
 typedef struct d1{
 	char points; // Character indicating direction corresponding to
@@ -21,15 +36,22 @@ typedef struct p1{
 } point;
 
 
-int isvalid_dir(point, direction);  // Returns -1 if invalid, +1 if valid
+int isvalid_dir(point, direction);  // Returns -1 if invalid, +1 if valid (That is,
+									// are there 4 nums including start to multiply along direction?)
 
-int mult_dir(int array[20][20], point, direction);  // Multiplies along specified direction
+int mult_dir(int array[BOUNDARY][BOUNDARY], point, direction);  // Multiplies along specified direction
+
+const static char dirs[] = {'u', 'd', 'r', 'l', 's', 'a', 't', 'b'};  // Shorthand
+// Was going to rewrite functs to use for loop with this instead of switch,
+// but I thought more explicit treatment was clearer.
+
+void testvalid();  // Tests isvalid_dir function and outputs to file
+
 
 int main(){
 	FILE *input = NULL;
-	int i, j, nums[20][20];
-	const static char dirs[] = {'u', 'd', 'r', 'l', 's', 'a', 't', 'b'};
-	// This will make it easier to specify directions
+	int i, j, k, nums[BOUNDARY][BOUNDARY], largest, temp;
+	largest = 1, temp = 0;
 
 	input = fopen("project_euler_prob11_input.txt", "r");  // open file for reading
 	if(input){
@@ -42,89 +64,149 @@ int main(){
 	point a;  // Just need one point and one direction
 	direction b; // No boy-band jokes here please.
 
-	for(i =0; i<20; i++)
-		for(j = 0; j<20; j++)
+	for(i =0; i<BOUNDARY; i++)
+		for(j = 0; j<BOUNDARY; j++)
 			fscanf(input, "%d", &nums[i][j]);  // Read data from file into array
 
 	fclose(input);
-	// Just testing functions
-	for(i = 0; i<8; i++){
-		b.points = dirs[i];
-		mult_dir(nums, a, b);
+	largest =1;
+	for (k = 0; k<8; k++){
+		b.points = dirs[k];
+		for(i = 0; i<BOUNDARY; i++){
+			for(j = 0; j<BOUNDARY; j++){
+				a.x = j;
+				a.y = i;
+				if(isvalid_dir(a,b) > 0 ){ // Is this a valid origin + dir combo?
+					temp = mult_dir(nums,a,b);
+					largest = (temp > largest) ? temp : largest;
+				}
+			}
+		}
 	}
 
-	b.points = 'w';
-	mult_dir(nums,a,b);
+	printf("The largest multiple of 4 adjacent numbers in 20x20 array is: %d\n", largest);
 
+	//testvalid();
 	return 0;
 }
 
 int isvalid_dir(point a, direction b){  // Returns -1 if invalid, +1 if valid
 	switch(b.points){					// Used to tell if need to multiply along given										// direction
 		case 'u':						// direction.
-			if( ( (a.y - 4 ) > -1) )
+			if( ( (a.y - 3 ) > -1) )
 					return 1;
-			// no break needed
+			return -1;
 		case 'd':
-			printf("Direction is down!\n");
-			break;
+			if ( (a.y + 3) < BOUNDARY)
+				return 1;
+			return -1;
 		case 'r':
-			printf("Direction is right!\n");
-			break;
+			if((a.x + 3) < BOUNDARY)
+				return 1;
+			return -1;
 		case 'l':
-			printf("Direction is left!\n");
-			break;
+			if((a.x -3) > -1)
+				return 1;
+			return -1;
 		case 's':
-			printf("Direction is northeast\n");
-			break;
+			if (((a.x +3) < BOUNDARY) && ((a.y -3) > -1))
+				return 1;
+			return -1;
 		case 'a':
-			printf("Direction is southeast\n");
-			break;
+			if (((a.x +3) < BOUNDARY) && ((a.y +3) < BOUNDARY))
+				return 1;
+			return -1;
 		case 't':
-			printf("Direction is southwest\n");
-			break;
+			if (((a.x - 3) > -1) && ((a.y +3) < BOUNDARY))
+				return 1;
+			return -1;
 		case 'b':
-			printf("Direction is northwest\n");
-			break;
+			if (((a.x - 3) > -1) && ((a.y - 3) > -1))
+				return 1;
+			return -1;
 
 		default: printf("Invalid direction!\n");
 			return -1;
-			// no break
 	}
-	return -1;
 }
 
-int mult_dir(int array[20][20], point a, direction b){
+int mult_dir(int array[BOUNDARY][BOUNDARY], point a, direction b){
 	// Return multiple along given direction starting from
 	// array[a.y][a.x] as starting point.
+	// Can assume that has already been checked for validity.
+	int temp = 1, i = 0;
 	switch(b.points){
 	case 'u':
-		printf("Direction is up!\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y) - i][a.x];
+		}
+		return temp;
 	case 'd':
-		printf("Direction is down!\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y) + i][a.x];
+		}
+		return temp;
 	case 'r':
-		printf("Direction is right!\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y)][(a.x)+i];
+		}
+		return temp;
 	case 'l':
-		printf("Direction is left!\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y)][(a.x)-i];
+		}
+		return temp;
 	case 's':
-		printf("Direction is northeast\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y) -i][(a.x)+i];
+		}
+		return temp;
 	case 'a':
-		printf("Direction is southeast\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y) +i][(a.x)+i];
+		}
+		return temp;
 	case 't':
-		printf("Direction is southwest\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y) +i][(a.x)-i];
+		}
+		return temp;
 	case 'b':
-		printf("Direction is northwest\n");
-		break;
+		for(i = 0; i<4; i++){
+			temp *= array[(a.y) -i][(a.x)-i];
+		}
+		return temp;
 
 	default: printf("Invalid direction!\n");
-		// no break
+		return 0;
 	}
-	return 0;
+}
+
+void testvalid(){
+	// What this function does:
+	/* Uses a series of nested loops to check 20x20 coordinates
+	 * and each direction for 'validity' at point as defined by isvalid_dir(point a, direction b).
+	 *
+	 * Really, this is just checking the isvalid_dir function.
+	 * Run it and you'll see what I mean.
+	 */
+	FILE *output;
+	output = fopen("project_euler_prob11_output.txt", "w");
+	int i, j,k;
+	point a;
+	direction b;
+
+	for(k=0; k<8; k++){
+		b.points = dirs[k];
+		fprintf(output, "\nDirection is %c below: \n\n", b.points);
+		for (i = 0; i<BOUNDARY; i++){
+			for(j=0; j<BOUNDARY; j++){
+				a.x = j;
+				a.y = i;
+				fprintf(output, "%2d\t", isvalid_dir(a,b) );
+			}
+			fprintf(output, "\n");
+		}
+	}
+	fclose(output);
 }
