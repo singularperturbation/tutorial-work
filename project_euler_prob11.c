@@ -94,7 +94,7 @@ int isvalid_dir(point a, direction b){  // Returns -1 if invalid, +1 if valid
 	switch(b.points){					// Used to tell if need to multiply along given										// direction
 		case 'u':						// direction.
 			if( ( (a.y - 3 ) > -1) )
-					return 1;
+				return 1;
 			return -1;
 		case 'd':
 			if ( (a.y + 3) < BOUNDARY)
