@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include "myfuncts.h"
 
+static void initialize_factor_list(int current_length, factor *factors);
+
 
 void *era_sieve(int input[], int length){
 	// More or less adapted from problem 7, but with pointer malloc'd rather than having mostly

@@ -5,6 +5,13 @@
  *      Author: ssimmons
  *
  * Comments about defaults are for project Euler problem 12.
+ *
+ * WARNING: FACTORIZATION AS I HAVE WRITTEN IT IS INEFFICIENT AND HAS A BUG
+ * BUILT IN!  IF LIST OF PRIMES IS TOO LOW TO FACTORIZE COMPLETELY, THEN THE
+ * FUNCTION WILL FACTORIZE INCOMPLETELY, LEAVING WHATEVER IS LEFT.  THIS COULD
+ * BE DETECTED BY RETURNING NULL OR WARNING, BUT IT IS SUFFICIENT FOR MY NEEDS
+ * FOR THIS THIS PROBLEM.
+ *
  */
 
 #ifndef MYFUNCTS_H_
@@ -16,11 +23,7 @@
 typedef struct prime_and_power factor;
 
 void *era_sieve(int input[], int length);  // input[] of length 8000 to get 1000 primes
-void *factorize(int input, int *primes);
-// Returns pointer to int array of factors
-//  (primes here should be of length ~1000, as 1000th prime == 7919)
-
-static void initialize_factor_list(int current_length, factor *factors);  // Used internally
+void *factorize(int input, int *primes);   // Returns pointer to int array of factors
 
 void clean(int *primes, factor *factors); // Cleaning up memory after done
 
