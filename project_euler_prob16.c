@@ -1,5 +1,5 @@
 /*
- * project_euler_prob15.c
+ * project_euler_prob16.c
  *
  *  Created on: Aug 23, 2012
  *      Author: ssimmons
