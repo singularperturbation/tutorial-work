@@ -1,58 +1,63 @@
 CFLAGS=-Wall -g
 # Just going to do this Makefile by hand
 problems=montecarlo problem1 problem2 problem3 problem4 problem5 problem6 problem7 problem8 problem10 problem11 problem12 problem13 problem14 problem16
+
 all: tags sources
 
 tags:
 	ctags -R ./
 
-sources: $(problems)
+sources: $(addprefix bin/, $(problems))
 
-montecarlo: montecarlo.c
-	gcc -lm  montecarlo.c -o montecarlo
+bin/problem17: project_euler_prob17.c
+	gcc -lm project_euler_prob17.c -o bin/problem17
 
-problem13: project_euler_prob13.c
-	gcc project_euler_prob13.c -o problem13
+bin/montecarlo: montecarlo.c
+	gcc -lm montecarlo.c -o bin/montecarlo
+
+bin/problem13: project_euler_prob13.c
+	gcc project_euler_prob13.c -o bin/problem13
 	
-problem14: project_euler_prob14.c
-	gcc project_euler_prob14.c -o problem14
+bin/problem14: project_euler_prob14.c
+	gcc project_euler_prob14.c -o bin/problem14
 
-problem12: prob12_functs.c myfuncts.h project_euler_prob12.c
-	gcc -lm prob12_functs.c project_euler_prob12.c -o problem12
+bin/problem12: prob12_functs.c myfuncts.h project_euler_prob12.c
+	gcc -lm prob12_functs.c project_euler_prob12.c -o bin/problem12
 
-problem1: project_euler_prob1.c
-	gcc -lm project_euler_prob1.c -o problem1
+bin/problem1: project_euler_prob1.c
+	gcc -lm project_euler_prob1.c -o bin/problem1
 
-problem10: project_euler_prob10.c
-	gcc -lm project_euler_prob10.c -o problem10
+bin/problem10: project_euler_prob10.c
+	gcc -lm project_euler_prob10.c -o bin/problem10
 
-problem11: project_euler_prob11.c
-	gcc -lm project_euler_prob11.c -o problem11
+bin/problem11: project_euler_prob11.c
+	gcc -lm project_euler_prob11.c -o bin/problem11
 
-problem16: project_euler_prob16.c
-	gcc -lm -lgmp project_euler_prob16.c -o problem16
+bin/problem16: project_euler_prob16.c
+	gcc -lm -lgmp project_euler_prob16.c -o bin/problem16
 
-problem2: project_euler_prob2.c
-	gcc -lm project_euler_prob2.c -o problem2
+bin/problem2: project_euler_prob2.c
+	gcc -lm project_euler_prob2.c -o bin/problem2
 
-problem3: project_euler_prob3.c
-	gcc -lm -lgmp project_euler_prob3.c -o problem3	
+bin/problem3: project_euler_prob3.c
+	gcc -lm -lgmp project_euler_prob3.c -o bin/problem3	
 
-problem4: project_euler_prob4.c
-	gcc -lm project_euler_prob4.c -o problem4
+bin/problem4: project_euler_prob4.c
+	gcc -lm project_euler_prob4.c -o bin/problem4
 
-problem5: project_euler_prob5.c
-	gcc -lm project_euler_prob5.c -o problem5
+bin/problem5: project_euler_prob5.c
+	gcc -lm project_euler_prob5.c -o bin/problem5
 
-problem6: project_euler_prob6.c
-	gcc -lm project_euler_prob6.c -o problem6
+bin/problem6: project_euler_prob6.c
+	gcc -lm project_euler_prob6.c -o bin/problem6
 
-problem7: project_euler_prob7.c
-	gcc -lm project_euler_prob7.c -o problem7
+bin/problem7: project_euler_prob7.c
+	gcc -lm project_euler_prob7.c -o bin/problem7
 
-problem8: project_euler_prob8.c
-	gcc -lm project_euler_prob8.c -o problem8
+bin/problem8: project_euler_prob8.c
+	gcc -lm project_euler_prob8.c -o bin/problem8
 
 clean:
-	rm problem*
-	rm montecarlo
+	rm bin/problem*
+	rm bin/montecarlo
+	rm tags

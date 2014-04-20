@@ -86,6 +86,7 @@ int main(){
 
 	// Now to print out factor list
 	for (i = 0; i<10; i++){
+      if ( (factors[i][0] == 0) || factors[1][0] == 0) break;
 			printf("%ld may be factored %d times by %d.\n", INPUT, factors[i][1], factors[i][0]);
 	}
 
