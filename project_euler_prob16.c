@@ -28,7 +28,7 @@ int main(){
 	mpz_t answer;
 	mpz_init(answer);
 	mpz_ui_pow_ui(answer,2,1000);
-	digits = mpz_get_str(digits,10,answer);
+	digits = mpz_get_str((char *) NULL,10,answer);
 
 	printf("%s\n", digits); // debugging
 
