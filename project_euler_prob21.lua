@@ -43,6 +43,7 @@ for i = 1,9999 do
   local amicable = false
   if (numsToCheck[i] == false) then goto continue end
   amicable,num = isAmicable(i)
+  if (num == i) then amicable=false end
 
   if amicable then
     numsToCheck[num] = false
