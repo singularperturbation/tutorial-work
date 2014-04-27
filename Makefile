@@ -1,7 +1,7 @@
 CFLAGS=-Wall -g
 # Just going to do this Makefile by hand
 
-problems=montecarlo problem1 problem2 problem3 problem4 problem5 problem6 problem7 problem8 problem10 problem11 problem12 problem13 problem14 problem16 problem17
+problems=montecarlo problem1 problem2 problem3 problem4 problem5 problem6 problem7 problem8 problem10 problem11 problem12 problem13 problem14 problem16 problem17 problem18
 
 all: tags sources
 
@@ -9,6 +9,12 @@ tags:
 	ctags -R ./ /usr/include/*.h
 
 sources: $(addprefix bin/, $(problems))
+
+bin/problem18: project_euler_prob18.lua bin/problem18helper
+	luajit -b project_euler_prob18.lua bin/problem18
+
+bin/problem18helper: project_euler_prob18_helper.lua
+	luajit -b project_euler_prob18_helper.lua bin/problem18helper
 
 bin/problem17: project_euler_prob17.h project_euler_prob17_helper_functions.c project_euler_prob17.c
 	gcc -std=c99 project_euler_prob17_helper_functions.c project_euler_prob17.c -o bin/problem17
