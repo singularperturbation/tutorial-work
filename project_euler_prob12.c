@@ -18,6 +18,7 @@
  *
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include "myfuncts.h"
 
 #define MAX_TESTED 20000  // Not sure how large need to keep testing, so can change if need more
@@ -27,17 +28,18 @@ int tri_number(int n); // Return nth triangular number
 
 int main(){
 	FILE *output = fopen("output_problem12.txt", "w"); // Writing to output just to be safe
-	int nums[8000], *primes, i, input, j;
+  int *nums = (int *) calloc(sizeof(int)*8000,sizeof(int));
+	int *primes, i, input, j;
 	int total_divisors = 1;
 	j = 0;
 
-	factor *factors;
+	factor *factors = (factor *) NULL;
 
-	primes = era_sieve(nums, 8000);
+	primes = (int *) era_sieve(nums, 8000);
 
 	for(i = 7; i<MAX_TESTED; i++){
 		input = tri_number(i);
-		factors = factorize(input, primes);
+		factors = (factor *) factorize(input, primes);
 		while((factors+j)->exponent != -1){
 			total_divisors *= ( ((factors+j)->exponent)+1 );
 			j++;
@@ -47,19 +49,18 @@ int main(){
 			printf("FOUND IT! %d has %d divisors.\n", input, total_divisors);
 			// Will get my attention :)
 		}
+    free(factors);
 		total_divisors = 1;
-		j =0;
+		j = 0;
 	}
 
-	clean(primes,factors);
+  free(primes);
+  free(nums);
 	fclose(output);
 
 	return 0;
 }
 
-int total_divisors(factor *factors){
-	return 0;
-}
 
 int tri_number(int n){  // Returns nth triangular number
 	return n*(n+1)/2;

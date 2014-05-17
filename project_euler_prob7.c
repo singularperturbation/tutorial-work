@@ -16,12 +16,13 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 #define LENGTH 500000
 
 int main(){
-	int candidates[LENGTH];
+	int *candidates = (int * ) calloc(sizeof(int)*LENGTH,sizeof(int));
 	int i, j;
 	j = 0;
 
@@ -51,5 +52,7 @@ int main(){
 			}
 		}
 	}
+
+  free(candidates);
 	return 0;
 }

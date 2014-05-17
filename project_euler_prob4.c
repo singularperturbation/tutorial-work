@@ -36,7 +36,9 @@ int main(){
 	}
 	*/
 
-	int palindromes[2000];
+	int *palindromes;
+  palindromes = (int *) calloc(sizeof(int) * 2000,sizeof(int));
+
 	int i,j, temp, counter, numpals;
 
 	for (i = 0; i<2000; i++){
@@ -60,12 +62,14 @@ int main(){
 
 	printf("Now sorting!\n");
 
-	quicksort(palindromes, 0, 2000);
+	quicksort(palindromes, 0, 1999);
 
 	printf("The largest are:\n");
-	printf("%d\n", palindromes[2000]);
 	printf("%d\n", palindromes[1999]);
 	printf("%d\n", palindromes[1998]);
+	printf("%d\n", palindromes[1997]);
+
+  free(palindromes);
 
 	return 0;
 }

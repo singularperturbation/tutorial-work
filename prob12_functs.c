@@ -17,7 +17,7 @@ void *era_sieve(int input[], int length){
 	// More or less adapted from problem 7, but with pointer malloc'd rather than having mostly
 	// empty array.
 	int *primes = NULL;
-	int i, j, counter=0;
+	int i=0, j=0, counter=0;
 	input[0] = 0;
 	input[1] = 0;
 
@@ -47,7 +47,7 @@ void *era_sieve(int input[], int length){
 	}
 	// Now we've set primes to contain all of the prime numbers sieved earlier
 
-	*(primes+j+1) = 0;
+	*(primes+j) = 0;
 
 
 	return primes;

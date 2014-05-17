@@ -42,6 +42,11 @@ int main(){
 	FILE *input;
 	int i = 0, product = 1, counter = 5;
 	char *line = (char *) malloc((sizeof(char)*100));
+  // Keep origPointer so that can free line
+  // We fgets(line) until it's null, so no way to free
+  // unless we save the original memory location somewhere
+  // or structure loop differently.
+  char *origPointer = line;
 	link *templinks[5];
 	list working_numbers;
 
@@ -76,6 +81,7 @@ int main(){
 	product *= productlist(&working_numbers);
 
 	printf("The product of the first five is: %d\n", product);
+
 	while(line != NULL){
 
 		while(line[counter] != '\n'){
@@ -102,7 +108,7 @@ int main(){
 	for (i = 0; i<5; i++)
 		free(templinks[i]);
 
-	free(line);
+	free(origPointer);
 	fclose(input);
 
 	return 0;
@@ -118,7 +124,7 @@ void push(list *input_list, link *to_add){
 	// This assumes list already has at least a first
 	// and last member, will have to add those two manually.
 	(input_list->last)->next = to_add;
-	to_add->next = NULL;
+	to_add->next = (link *) NULL;
 	input_list->last = to_add;
 }
 
