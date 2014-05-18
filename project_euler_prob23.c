@@ -45,46 +45,104 @@
 // Once we have a list of all abundant numbers, it will be n^2 problem for much
 // smaller n.  This would be much better.
 
+// EDIT: (After finished)
+// Looks like others solutions were to precompute sums for all abundant
+// numbers where sum was <= 28123, then see if each number from 1 to 28123
+// was in this list of sums by using a map.  This is probably order
+// of magnitude better than my solution (takes ~1 minute on my computer).
 
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
-#define MAXPOSSIBLE 28123
+//#define PROB23DEBUG 0
+#define MAXPOSSIBLE 28124
 
 // Returns 1 if is an abundant number, zero if not 
 
 int isAbundant(int input){
-    int numDivisors = 0;
+    int numDivisors = 1;
     int sumDivisors = 0;
-    int curSize = 50;
-    int *divisors = (int * ) calloc(50*sizeof(int),sizeof(int) );
+    int curSize = 50, stepSize=50;
     // Will need to expand if have > 50 proper divisors
-   
+    int *divisors = (int * ) calloc(curSize*sizeof(int),sizeof(int) );
+    int maxNum = input;
+    int i = 0;
+
+    // Always divisible by 1 (though don't count itself)
+    divisors[0] = 1;
+
+    for (i = 2; i < maxNum; i++){
+      if ( 0 == (input % i) ) {
+        if ( (numDivisors + 10) >= curSize){
+          curSize += stepSize;
+          divisors = (int * ) realloc(divisors,curSize*sizeof(int));
+        }
+        divisors[numDivisors] = i;
+        numDivisors++;
+      }
+    }
+
+    // Found all divisors, now need to sum
+    for (i = 0; i < numDivisors; i++){
+      sumDivisors += divisors[i];
+    }
 
     free(divisors);
+
+    if (sumDivisors > input)
+      return 1;
+
     return 0;
 }
 
-
-int main(int argc, char *argv[]){
-    int all[MAXPOSSIBLE];
-    int i=0,numFound=0;
-    for (i = 0; i< MAXPOSSIBLE; i++){
-        all[i] = 0;
+int canBeSummed(int input, int *abundantNumbers, int length){
+    int firstPos = 0, secondPos = 0;
+    
+    for (firstPos = 0; firstPos < length; firstPos++){
+        for (secondPos=firstPos; secondPos < length; secondPos++){
+            if (abundantNumbers[firstPos] + abundantNumbers[secondPos] == input){
+               return 1;
+        }
+      }
     }
 
-    for (i = 0; i < MAXPOSSIBLE; i++){
+    return 0;
+}
 
+int main(int argc, char *argv[]){
+    int *all = (int * ) calloc(sizeof(int)*MAXPOSSIBLE,sizeof(int));
+    long int totSum = 0;
+    int i=0,numFound=0;
+
+
+    for (i = 2; i < MAXPOSSIBLE; i++){
         if (1 == isAbundant(i) ){
-           numFound++;
            all[numFound] = i;
+           numFound++;
         }
      }
      
-     // After we've found all the abundant numbers, loop from 1 to 28123 and
-     // sum those that can't be summed by two abundant
-           
-    
+     #ifdef PROB23DEBUG
+     printf("Found all abundant numbers < 28124\n");
+     
+     for (i = 0; i < (numFound); i++){
+         printf("Abundant number %d: %d\n",i,all[i]);
+     }
+     #endif
+     // After we've found all the abundant numbers, loop from 1 to 28124 and
+     // sum those that can't be summed by two abundant.
+
+     for (i = 1; i < MAXPOSSIBLE; i++){
+         if (0 == canBeSummed(i,all,numFound) ){
+          #ifdef PROB23DEBUG
+          printf("Found %d!\n", i);
+          #endif
+          totSum += (long int) i; 
+         }
+     } 
 
      printf("DONE\n");
+     printf("Sum of numbers < 28124 can't be summed from 2 abundant: %ld\n", totSum);
+     free(all);
      return 0;
 }
