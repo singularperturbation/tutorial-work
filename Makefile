@@ -10,8 +10,11 @@ tags:
 
 sources: $(addprefix bin/, $(problems))
 
-bin/problem24: project_euler_prob24.lua
-	luajit -b project_euler_prob24.lua -o bin/problem24
+bin/problem24: project_euler_prob24.nim
+	nimrod --out:bin/problem24 c -d:release project_euler_prob24.nim
+
+#bin/problem24: project_euler_prob24.lua
+#	luajit -b project_euler_prob24.lua bin/problem24
 
 bin/problem23: project_euler_prob23.c
 	gcc -lm -O3 project_euler_prob23.c -o bin/problem23
