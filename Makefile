@@ -1,7 +1,7 @@
 CFLAGS=-Wall -ggdb
 # Just going to do this Makefile by hand
 
-problems=montecarlo problem1 problem2 problem3 problem4 problem5 problem6 problem7 problem8 problem10 problem11 problem12 problem13 problem14 problem16 problem17 problem18 problem20 problem23 problem23lua problem24
+problems=montecarlo problem1 problem2 problem3 problem4 problem5 problem6 problem7 problem8 problem10 problem11 problem12 problem13 problem14 problem16 problem17 problem18 problem20 problem23 problem23lua problem24 problem25
 
 all: tags sources
 
@@ -9,6 +9,9 @@ tags:
 	ctags -R ./ /usr/include/*.h
 
 sources: $(addprefix bin/, $(problems))
+
+bin/problem25: project_euler_prob25.c
+	gcc -lm -lgmp project_euler_prob25.c -o bin/problem25
 
 bin/problem24: project_euler_prob24.nim
 	nimrod --out:bin/problem24 c -d:release project_euler_prob24.nim
