@@ -11,13 +11,13 @@ tags:
 sources: $(addprefix bin/, $(problems))
 
 bin/problem25nim: project_euler_prob25.nim
-	nimrod --out:bin/problem25nim c -d:release --parallelBuild=0 project_euler_prob25.nim
+	nim --out:bin/problem25nim c -d:release --parallelBuild=0 project_euler_prob25.nim
 
 bin/problem25: project_euler_prob25.c
 	gcc -lm -lgmp project_euler_prob25.c -o bin/problem25
 
 bin/problem24: project_euler_prob24.nim
-	nimrod --out:bin/problem24 c -d:release --parallelBuild=0 project_euler_prob24.nim
+	nim --out:bin/problem24 c -d:release --parallelBuild=0 project_euler_prob24.nim
 
 #bin/problem24: project_euler_prob24.lua
 #	luajit -b project_euler_prob24.lua bin/problem24
